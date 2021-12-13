@@ -144,6 +144,18 @@ class CryptoDetailWidget extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 32.0),
+        const Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            "VIEW ORDER BOOK ",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+        ),
       ],
     );
   }
