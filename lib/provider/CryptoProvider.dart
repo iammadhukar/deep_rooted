@@ -10,14 +10,21 @@ class CryptoProvider extends ChangeNotifier {
 
   CryptoData? _cryptoData;
   CryptoData? get cryptoData => _cryptoData;
+  bool _fetchingCryptoData = false;
+  bool get fetchingCryptoData => _fetchingCryptoData;
+  bool _initialState = true;
+  bool get initialState => _initialState;
 
   Future<CryptoData?> getDataForCryptoPair(String cryptoPair) async {
+    _fetchingCryptoData = true;
+    _initialState = false;
     _cryptoData = null;
+    notifyListeners();
     final response = await http.get(Uri.parse('$dataUrl+$cryptoPair'));
     if (response.statusCode == 200) {
       _cryptoData = CryptoData.fromJson(jsonDecode(response.body), cryptoPair);
     }
-    print("hjhjhjhjhjhj ${_cryptoData?.highPrice}");
+    _fetchingCryptoData = false;
     notifyListeners();
   }
 }

@@ -23,7 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               Container(
-                color: Colors.grey.shade400,
+                color: Colors.grey.shade300,
                 child: TextFormField(
                   controller: _controller,
                   decoration: InputDecoration(
@@ -42,15 +42,50 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               const SizedBox(height: 32.0),
-              Selector<CryptoProvider, CryptoData?>(
-                shouldRebuild: (prev, next) => true,
+              Selector<CryptoProvider, bool>(
+                shouldRebuild: (prev, next) => prev != next,
                 selector: (context, cryptoProvider) =>
-                    cryptoProvider.cryptoData,
-                builder: (copntxt, cryptoData, _) {
-                  if (cryptoData == null) {
-                    return const Text("No Data Found");
+                    cryptoProvider.initialState,
+                builder: (context, initialState, _) {
+                  if (initialState) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(
+                            Icons.search,
+                            size: 150,
+                            color: Colors.grey,
+                          ),
+                          Text("Enter a currency pair to load data"),
+                        ],
+                      ),
+                    );
                   } else {
-                    return CryptoDetailWidget(cryptoData: cryptoData);
+                    return Selector<CryptoProvider, bool>(
+                      shouldRebuild: (prev, next) => prev != next,
+                      selector: (context, cryptoProvider) =>
+                          cryptoProvider.fetchingCryptoData,
+                      builder: (context, fetchingCryptoData, _) {
+                        if (fetchingCryptoData) {
+                          return const CircularProgressIndicator();
+                        } else {
+                          return Selector<CryptoProvider, CryptoData?>(
+                            shouldRebuild: (prev, next) => true,
+                            selector: (context, cryptoProvider) =>
+                                cryptoProvider.cryptoData,
+                            builder: (copntxt, cryptoData, _) {
+                              if (cryptoData == null) {
+                                return const Text("No Data Found");
+                              } else {
+                                return CryptoDetailWidget(
+                                    cryptoData: cryptoData);
+                              }
+                            },
+                          );
+                        }
+                      },
+                    );
                   }
                 },
               ),
