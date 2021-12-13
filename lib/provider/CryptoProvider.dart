@@ -17,6 +17,7 @@ class CryptoProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       _cryptoData = CryptoData.fromJson(jsonDecode(response.body), cryptoPair);
     }
+    print("hjhjhjhjhjhj ${_cryptoData?.highPrice}");
     notifyListeners();
   }
 }

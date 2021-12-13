@@ -1,3 +1,5 @@
+import 'package:deep_rooted/components/CryptoDetailWidget.dart';
+import 'package:deep_rooted/model/CryptoData.dart';
 import 'package:deep_rooted/provider/CryptoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +40,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(height: 32.0),
+              Selector<CryptoProvider, CryptoData?>(
+                shouldRebuild: (prev, next) => true,
+                selector: (context, cryptoProvider) =>
+                    cryptoProvider.cryptoData,
+                builder: (copntxt, cryptoData, _) {
+                  if (cryptoData == null) {
+                    return const Text("No Data Found");
+                  } else {
+                    return CryptoDetailWidget(cryptoData: cryptoData);
+                  }
+                },
               ),
             ],
           ),
