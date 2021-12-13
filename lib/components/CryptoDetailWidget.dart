@@ -1,13 +1,20 @@
 import 'package:deep_rooted/model/CryptoData.dart';
+import 'package:deep_rooted/provider/CryptoProvider.dart';
 import 'package:flutter/material.dart';
 
-class CryptoDetailWidget extends StatelessWidget {
+class CryptoDetailWidget extends StatefulWidget {
   final CryptoData cryptoData;
   const CryptoDetailWidget({
     Key? key,
     required this.cryptoData,
   }) : super(key: key);
 
+  @override
+  State<CryptoDetailWidget> createState() => _CryptoDetailWidgetState();
+}
+
+class _CryptoDetailWidgetState extends State<CryptoDetailWidget> {
+  bool showOrderBook = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,14 +24,14 @@ class CryptoDetailWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              cryptoData.name.toUpperCase(),
+              widget.cryptoData.name.toUpperCase(),
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              '${cryptoData.openPrice} open ${cryptoData.volume}',
+              '${widget.cryptoData.openPrice} open ${widget.cryptoData.volume}',
               style: const TextStyle(
                 fontSize: 10,
               ),
@@ -47,7 +54,7 @@ class CryptoDetailWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$ ${cryptoData.openPrice}',
+                    '\$ ${widget.cryptoData.openPrice}',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -66,7 +73,7 @@ class CryptoDetailWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$ ${cryptoData.highPrice}',
+                    '\$ ${widget.cryptoData.highPrice}',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -94,7 +101,7 @@ class CryptoDetailWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$ ${cryptoData.lowPrice}',
+                    '\$ ${widget.cryptoData.lowPrice}',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -113,7 +120,7 @@ class CryptoDetailWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$ ${cryptoData.lastPrice}',
+                    '\$ ${widget.cryptoData.lastPrice}',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -136,7 +143,7 @@ class CryptoDetailWidget extends StatelessWidget {
               ),
             ),
             Text(
-              '\$ ${cryptoData.volume}',
+              '\$ ${widget.cryptoData.volume}',
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -145,14 +152,21 @@ class CryptoDetailWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 32.0),
-        const Align(
+        Align(
           alignment: Alignment.centerRight,
-          child: Text(
-            "VIEW ORDER BOOK ",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
+          child: TextButton(
+            onPressed: () {
+              setState(() {
+                showOrderBook = true;
+              });
+            },
+            child: const Text(
+              "VIEW ORDER BOOK ",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
             ),
           ),
         ),
