@@ -95,7 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Provider.of<CryptoProvider>(context,listen:false).get
+          if (_controller.text.isNotEmpty) {
+            Provider.of<CryptoProvider>(context, listen: false)
+                .getDataForcurrencyPair(_controller.text);
+          }
         },
         child: const Icon(Icons.refresh),
       ),
