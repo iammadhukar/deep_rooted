@@ -177,7 +177,21 @@ class _CryptoDetailWidgetState extends State<CryptoDetailWidget> {
             ),
           ),
         ),
-        showOrderBook ? ShowOrderBook() : const SizedBox.shrink(),
+        showOrderBook
+            ? Selector<CryptoProvider, bool>(
+                shouldRebuild: (prev, next) => true,
+                builder: (context, loadingOrderBook, _) {
+                  if (loadingOrderBook) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return ShowOrderBook();
+                  }
+                },
+                selector: (context, provider) => provider.loadingOrderBook,
+              )
+            : const SizedBox.shrink(),
       ],
     );
   }

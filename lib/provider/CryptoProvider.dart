@@ -21,6 +21,8 @@ class CryptoProvider extends ChangeNotifier {
   bool get fetchingCryptoData => _fetchingCryptoData;
   bool _initialState = true;
   bool get initialState => _initialState;
+  bool _loadingOrderBook = false;
+  bool get loadingOrderBook => _loadingOrderBook;
 
   Future<CryptoData?> getDataForcurrencyPair(String currencyPair) async {
     _fetchingCryptoData = true;
@@ -39,6 +41,7 @@ class CryptoProvider extends ChangeNotifier {
   getOrderBookForPair(String currencyPair) async {
     _bidPrice = null;
     _askPrice = null;
+    _loadingOrderBook = true;
     notifyListeners();
     final response = await http.get(Uri.parse('$orderBookUrl+$currencyPair'));
     if (response.statusCode == 200) {
@@ -59,13 +62,13 @@ class CryptoProvider extends ChangeNotifier {
             quantity: double.parse(element[1])));
       });
     }
-    bidPrice!.sort((a, b) => a.price.compareTo(b.price));
     if (bidPrice!.isNotEmpty) {
-      bidPrice!.sort((a, b) => a.price.compareTo(b.price));
+      bidPrice!.sort((a, b) => b.price.compareTo(a.price));
     }
     if (askPrice!.isNotEmpty) {
-      askPrice!.sort((a, b) => a.price.compareTo(b.price));
+      askPrice!.sort((a, b) => b.price.compareTo(a.price));
     }
+    _loadingOrderBook = false;
     notifyListeners();
   }
 }
