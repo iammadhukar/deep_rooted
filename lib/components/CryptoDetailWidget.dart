@@ -1,6 +1,9 @@
 import 'package:deep_rooted/model/CryptoData.dart';
 import 'package:deep_rooted/provider/CryptoProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'ShowOrderBook.dart';
 
 class CryptoDetailWidget extends StatefulWidget {
   final CryptoData cryptoData;
@@ -157,7 +160,11 @@ class _CryptoDetailWidgetState extends State<CryptoDetailWidget> {
           child: TextButton(
             onPressed: () {
               setState(() {
-                showOrderBook = true;
+                showOrderBook = !showOrderBook;
+                if (showOrderBook) {
+                  Provider.of<CryptoProvider>(context, listen: false)
+                      .getOrderBookForPair(widget.cryptoData.name);
+                }
               });
             },
             child: const Text(
@@ -170,6 +177,7 @@ class _CryptoDetailWidgetState extends State<CryptoDetailWidget> {
             ),
           ),
         ),
+        showOrderBook ? ShowOrderBook() : const SizedBox.shrink(),
       ],
     );
   }

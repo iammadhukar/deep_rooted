@@ -12,7 +12,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         if (_controller.text.isNotEmpty) {
                           Provider.of<CryptoProvider>(context, listen: false)
-                              .getDataForCryptoPair(_controller.text);
+                              .getDataForcurrencyPair(_controller.text);
                         }
                       },
                       child: const Icon(Icons.search),
@@ -92,6 +92,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Provider.of<CryptoProvider>(context,listen:false).get
+        },
+        child: const Icon(Icons.refresh),
       ),
     );
   }
